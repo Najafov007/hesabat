@@ -25,7 +25,7 @@ const useRealTimeData = () => {
   useEffect(() => {
     if (isLive) {
       intervalRef.current = setInterval(() => {
-        setData(prevData => ({
+        setData(_prevData => ({
           threats: generateThreatData(),
           incidents: generateIncidentData(),
           systemStatus: generateSystemStatus(),
@@ -55,7 +55,7 @@ const useRealTimeData = () => {
   };
 
   const generateIncidentData = () => {
-    return Array.from({ length: 8 }, (_, i) => ({
+    return Array.from({ length: 8 }, (_, _i) => ({
       id: `INC-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`,
       title: [
         'Suspicious Network Activity Detected',
@@ -244,7 +244,7 @@ const ThreatFeed = ({ threats, title = "Live Threat Feed" }) => {
 
 // Incident Response Dashboard
 const IncidentDashboard = ({ incidents }) => {
-  const [selectedIncident, setSelectedIncident] = useState(null);
+  const [_selectedIncident, setSelectedIncident] = useState(null);
 
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {

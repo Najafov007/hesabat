@@ -16,7 +16,9 @@ import {
   Activity,
   Zap
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  //BarChart, Bar, 
+  PieChart, Pie, Cell } from 'recharts';
 
 const generateSQLAttacks = () => {
   const attackTypes = [
@@ -122,10 +124,15 @@ const SQLHighlighter = ({ query, showLineNumbers = false, title = null }) => {
     const keywords = /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|UNION|OR|AND|NOT|NULL|TRUE|FALSE|EXEC|WAITFOR|DELAY|SUBSTRING|COUNT|INFORMATION_SCHEMA|TABLES|USERS|PASSWORD|USERNAME|ADMIN|ALL|DISTINCT|TOP|AS|ORDER|BY|GROUP|HAVING|JOIN|INNER|LEFT|RIGHT|OUTER|ON|CASE|WHEN|THEN|ELSE|END|IF|EXISTS|IN|LIKE|BETWEEN|IS|DECLARE|SET|CAST|CONVERT|CHAR|VARCHAR|INT|FLOAT|DATETIME)\b/gi;
     const strings = /('([^'\\]|\\.)*'|"([^"\\]|\\.)*")/g;
     const comments = /(--.*$|\/\*[\s\S]*?\*\/)/gm;
-    const operators = /(\=|\<\=|\>\=|\<\>|\<|\>|\!|\+|\-|\*|\/|\%|\|\||&&)/g;
+    // const operators = /(\=|\<\=|\>\=|\<\>|\<|\>|\!|\+|\-|\*|\/|\%|\|\||&&)/g;
+    // const numbers = /\b\d+(\.\d+)?\b/g;
+    // const functions = /\b(COUNT|SUM|AVG|MAX|MIN|LEN|UPPER|LOWER|TRIM|LTRIM|RTRIM|REPLACE|CONCAT|ISNULL|COALESCE)\s*\(/gi;
+    // const maliciousParts = /(\'\s*OR\s*\'\d\'\s*\=\s*\'\d\'|DROP\s+TABLE|xp_cmdshell|WAITFOR\s+DELAY|\-\-|\#|\/\*|\*\/)/gi;
+    const operators = /(=|<=|>=|<>|<|>|!|\+|-|\*|\/|%|\|\||&&)/g;
     const numbers = /\b\d+(\.\d+)?\b/g;
     const functions = /\b(COUNT|SUM|AVG|MAX|MIN|LEN|UPPER|LOWER|TRIM|LTRIM|RTRIM|REPLACE|CONCAT|ISNULL|COALESCE)\s*\(/gi;
-    const maliciousParts = /(\'\s*OR\s*\'\d\'\s*\=\s*\'\d\'|DROP\s+TABLE|xp_cmdshell|WAITFOR\s+DELAY|\-\-|\#|\/\*|\*\/)/gi;
+    const maliciousParts = /('\s*OR\s*'\d'\s*=\s*'\d'|DROP\s+TABLE|xp_cmdshell|WAITFOR\s+DELAY|--|#|\/\*|\*\/)/gi;
+
 
     return sql
       .replace(maliciousParts, '<span class="bg-red-500/30 text-red-300 px-1 rounded font-bold animate-pulse">$1</span>')
