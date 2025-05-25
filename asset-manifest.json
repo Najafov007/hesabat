@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Najafov007/hesabat/static/css/main.a12221e6.css",
-    "main.js": "/Najafov007/hesabat/static/js/main.88490bb6.js",
-    "static/js/453.68693753.chunk.js": "/Najafov007/hesabat/static/js/453.68693753.chunk.js",
-    "index.html": "/Najafov007/hesabat/index.html",
-    "main.a12221e6.css.map": "/Najafov007/hesabat/static/css/main.a12221e6.css.map",
-    "main.88490bb6.js.map": "/Najafov007/hesabat/static/js/main.88490bb6.js.map",
-    "453.68693753.chunk.js.map": "/Najafov007/hesabat/static/js/453.68693753.chunk.js.map"
+    "main.css": "/scada-system-nme/static/css/main.a12221e6.css",
+    "main.js": "/scada-system-nme/static/js/main.38976afb.js",
+    "static/js/453.68693753.chunk.js": "/scada-system-nme/static/js/453.68693753.chunk.js",
+    "index.html": "/scada-system-nme/index.html",
+    "main.a12221e6.css.map": "/scada-system-nme/static/css/main.a12221e6.css.map",
+    "main.38976afb.js.map": "/scada-system-nme/static/js/main.38976afb.js.map",
+    "453.68693753.chunk.js.map": "/scada-system-nme/static/js/453.68693753.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a12221e6.css",
-    "static/js/main.88490bb6.js"
+    "static/js/main.38976afb.js"
   ]
 }
