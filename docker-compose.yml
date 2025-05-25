@@ -1,0 +1,258 @@
+# version: '3.8'
+
+# services:
+#   # Ваш существующий frontend (добавляем только зависимость от backend)
+#   frontend:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:80"
+#     environment:
+#       - REACT_APP_API_URL=http://localhost:8000/api
+#     depends_on:
+#       - backend
+#     networks:
+#       - security-network
+
+#   # Новый backend
+#   backend:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - NODE_ENV=development
+#       - DB_HOST=postgres
+#       - DB_PORT=5432
+#       - DB_NAME=security_dashboard
+#       - DB_USER=security_user
+#       - DB_PASSWORD=secure_password_123
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     networks:
+#       - security-network
+
+#   # PostgreSQL
+#   postgres:
+#     image: postgres:15-alpine
+#     environment:
+#       - POSTGRES_DB=security_dashboard
+#       - POSTGRES_USER=admin_aztu
+#       - POSTGRES_PASSWORD=aztu_123
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U security_user -d security_dashboard"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     networks:
+#       - security-network
+
+#   # pgAdmin
+#   pgadmin:
+#     image: dpage/pgadmin4:latest
+#     environment:
+#       - PGADMIN_DEFAULT_EMAIL=aztu@admin.com
+#       - PGADMIN_DEFAULT_PASSWORD=aztu123
+#     ports:
+#       - "5050:80"
+#     volumes:
+#       - pgadmin_data:/var/lib/pgadmin
+#     depends_on:
+#       - postgres
+#     networks:
+#       - security-network
+
+# volumes:
+#   postgres_data:
+#   pgadmin_data:
+
+# networks:
+#   security-network:
+#     driver: bridge
+
+
+version: '3.8'
+
+services:
+  # Ваш существующий frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    networks:
+      - security-network
+
+  # Ваш существующий backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=security_dashboard
+      - DB_USER=security_user
+      - DB_PASSWORD=secure_password_123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - security-network
+
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=security_dashboard
+      - POSTGRES_USER=security_user
+      - POSTGRES_PASSWORD=secure_password_123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U security_user -d security_dashboard"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - security-network
+
+  # pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - security-network
+
+  # Redis - кэш и сессии
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - security-network
+
+  # Redis Commander - веб-интерфейс для Redis
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - security-network
+
+  # Prometheus - сбор метрик
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - security-network
+
+  # Node Exporter - метрики системы
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - security-network
+
+  # Redis Exporter - метрики Redis
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    ports:
+      - "9121:9121"
+    environment:
+      - REDIS_ADDR=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - security-network
+
+  # Grafana - визуализация метрик
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    networks:
+      - security-network
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  security-network:
+    driver: bridge
