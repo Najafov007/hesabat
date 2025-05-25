@@ -472,7 +472,7 @@ const DDoSAttackSimulation = () => {
               Real DDoS attacks can cause significant service disruptions and financial damage.
             </p>
             <p className="text-xs text-gray-500">
-              Developed by <strong>Nijat Najafov, Huseynli Murad, Elmin</strong> – Azerbaijan Technical University
+              Developed by <strong>Nijat Najafov, Huseynli Murad, Elmin Nuriyev</strong> – Azerbaijan Technical University
             </p>
           </div>
         </div>

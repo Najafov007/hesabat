@@ -759,7 +759,7 @@ const SQLInjectionSimulation = () => {
             This SQL injection simulator demonstrates common attack patterns for cybersecurity training purposes.
           </p>
           <p className="text-sm text-gray-500">
-            Created by <strong>Nijat Najafov, Huseynli Murad, Elmin</strong> - Azerbaijan Technical University
+            Created by <strong>Nijat Najafov, Huseynli Murad, Elmin Nuriyev</strong> - Azerbaijan Technical University
           </p>
         </motion.div>
       </div>

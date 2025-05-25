@@ -17,14 +17,11 @@
     "recharts": "^2.15.3",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://Najafov007.github.io/scada-system-nme/",
   "scripts": {
     "start": "react-scripts start",
     "build": "cross-env DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "build:css": "tailwindcss -i ./src/tailwind.css -o ./src/tailwind-output.css",
-    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/tailwind-output.css --watch",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "watch:css": "tailwindcss -i ./src/tailwind.css -o ./src/tailwind-output.css --watch"
   },
   "eslintConfig": {
     "extends": [

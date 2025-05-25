@@ -206,7 +206,7 @@ const Footer = () => {
           <div className="text-sm font-medium">
             By <span className="text-blue-400">Nijat Najafov</span>, 
             <span className="text-green-400"> Huseynli Murad</span>, 
-            <span className="text-purple-400"> Elmin</span> - 
+            <span className="text-purple-400"> Elmin Nuriyev</span> - 
             <span className="text-orange-400"> Azerbaijan Technical University</span>
           </div>
         </div>

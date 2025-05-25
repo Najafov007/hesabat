@@ -511,7 +511,7 @@ const MITMSimulation = () => {
               work in a controlled, educational environment.
             </p>
             <p className="text-xs text-gray-400">
-              <strong>Created by:</strong> Nijat Najafov, Huseynli Murad, Elmin – Azerbaijan Technical University
+              <strong>Created by:</strong> Nijat Najafov, Huseynli Murad, Elmin Nuriyev – Azerbaijan Technical University
             </p>
           </div>
         </div>
