@@ -1070,7 +1070,7 @@ const SecurityLogs = () => {
               🎓 Educational Cybersecurity Simulation • Created by{' '}
               <span className="text-blue-400 font-medium">Nijat Najafov</span>,{' '}
               <span className="text-blue-400 font-medium">Huseynli Murad</span>,{' '}
-              <span className="text-blue-400 font-medium">Elmin</span>
+              <span className="text-blue-400 font-medium">Elmin Nuriyev</span>
             </p>
             <p className="text-xs mt-1">
               Azerbaijan Technical University • Advanced Security Log Analysis System

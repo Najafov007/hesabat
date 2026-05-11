@@ -518,7 +518,7 @@ const ThreatIntelligenceDashboard = () => {
             incident management, and system monitoring capabilities. All threats and incidents are simulated for educational purposes.
           </p>
           <div className="text-sm text-gray-500">
-            Created by <span className="text-blue-400">Nijat Najafov</span>, <span className="text-blue-400">Huseynli Murad</span>, <span className="text-blue-400">Elmin</span> - Azerbaijan Technical University
+            Created by <span className="text-blue-400">Nijat Najafov</span>, <span className="text-blue-400">Huseynli Murad</span>, <span className="text-blue-400">Elmin Nuriyev</span> - Azerbaijan Technical University
           </div>
         </div>
       </div>
